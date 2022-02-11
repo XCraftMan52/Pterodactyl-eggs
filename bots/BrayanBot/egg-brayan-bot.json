@@ -1,0 +1,95 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v1",
+        "update_url": null
+    },
+    "exported_at": "2022-02-07T06:52:22-05:00",
+    "name": "BrayanBot",
+    "author": "support@brayanbot.dev",
+    "description": null,
+    "features": null,
+    "images": [
+        "ghcr.io\/parkervcp\/yolks:nodejs_17"
+    ],
+    "file_denylist": [],
+    "startup": "if [[ ! -z ${NODE_MODULES} ]]; then \/usr\/local\/bin\/npm install ${NODE_MODULES}; fi; if [ -f \/home\/container\/package.json ]; then \/usr\/local\/bin\/npm install; fi; node index.js ${STARTUP_FLAGS};",
+    "config": {
+        "files": "{\r\n    \"config.yml\": {\r\n        \"parser\": \"yaml\",\r\n        \"find\": {\r\n            \"Settings.Token\": \"{{server.build.env.BOT_TOKEN}}\",\r\n            \"Settings.Prefix\": \"{{server.build.env.BOT_PREFIX}}\",\r\n            \"Settings.Storage\": \"{{server.build.env.BOT_STORAGE_FILE}}\",\r\n            \"Embeds.Branding\": \"{{server.build.env.BOT_EMBED_BRANDING}}\",\r\n            \"Embeds.Color\": \"{{server.build.env.BOT_EMBED_COLOR}}\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"Bot Ready\"\r\n}",
+        "logs": "{}",
+        "stop": "^C^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n\r\necho -e \"\\033[0m--------------------------------------------------------------------\"\r\necho -e \"\\033[1;31m\u2022\\033[0m \\033[0;34mPreparing Container\"\r\necho -e \"\\033[0m--------------------------------------------------------------------\"\r\napt -qq update\r\napt install -qq -y git curl jq file unzip make gcc g++ python3 python-dev libtool\r\n\r\n#########################################################################################\r\n\r\n## Clone Repo\r\ncd \/mnt\/server\/\r\necho -e \"\\033[0m--------------------------------------------------------------------\"\r\necho -e \"\\033[1;31m\u2022\\033[0m \\033[0;34mCloning latest BrayanBot from Github\"\r\necho -e \"\\033[0m--------------------------------------------------------------------\"\r\ngit clone -q --depth 1 https:\/\/github.com\/BrayanbotDev\/BrayanBot.git .\/\r\nmv example.config.yml config.yml\r\n\r\n#########################################################################################\r\n\r\n## Install node_modules\r\nif [ -f \/mnt\/server\/package.json ]; \r\nthen\r\n    echo -e \"\\033[0m--------------------------------------------------------------------\"\r\n    echo -e \"\\033[0m\\033[1;31m\u2022\\033[0m \\033[0;34mInstalling node modules\"\r\n    echo -e \"\\033[0m--------------------------------------------------------------------\"\r\n    \/usr\/local\/bin\/npm install\r\nelse \r\n    echo -e \"\\033[0m--------------------------------------------------------------------\"\r\n    echo -e \"\\033[0m\\033[1;31m\u2022\\033[0m \\033[0;34mSkipping node modules installation as package.json wasn't found.\"\r\n    echo -e \"\\033[0m--------------------------------------------------------------------\"\r\nfi\r\n\r\n## Extra Node Module Installation\r\nif [[ ! -z ${NODE_MODULES} ]];\r\nthen\r\n    echo -e \"\\033[0m--------------------------------------------------------------------\"\r\n    echo -e \"\\033[0m\\033[1;31m\u2022\\033[0m \\033[0;34mInstalling extra('${NODE_MODULES}') node modules\"\r\n    echo -e \"\\033[0m--------------------------------------------------------------------\"\r\n    \/usr\/local\/bin\/npm install ${NODE_MODULES}\r\nelse \r\n    echo -e \"\\033[0m--------------------------------------------------------------------\"\r\n    echo -e \"\\033[0m\\033[1;31m\u2022\\033[0m \\033[0;34mSkipping extra node modules installation.\"\r\n    echo -e \"\\033[0m--------------------------------------------------------------------\"\r\nfi\r\n\r\n#########################################################################################\r\n\r\n## Make Extra Folders\r\necho -e \"\\033[0m--------------------------------------------------------------------\"\r\necho -e \"\\033[0m\\033[1;31m\u2022\\033[0m \\033[0;34mCreating Addons folder\"\r\necho -e \"\\033[0m--------------------------------------------------------------------\"\r\nmkdir Addons\/\r\n\r\n#########################################################################################",
+            "container": "node:17-buster-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Bot Token",
+            "description": "",
+            "env_variable": "BOT_TOKEN",
+            "default_value": "YOUR-BOT-TOKEN",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string"
+        },
+        {
+            "name": "Prefix",
+            "description": "",
+            "env_variable": "BOT_PREFIX",
+            "default_value": "-",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:1"
+        },
+        {
+            "name": "Bot Storage File",
+            "description": "",
+            "env_variable": "BOT_STORAGE_FILE",
+            "default_value": "database.db",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string"
+        },
+        {
+            "name": "Bot Embed Branding",
+            "description": "",
+            "env_variable": "BOT_EMBED_BRANDING",
+            "default_value": "BrayanBot",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string"
+        },
+        {
+            "name": "Bot Embed Color",
+            "description": "",
+            "env_variable": "BOT_EMBED_COLOR",
+            "default_value": "2f3136",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:255"
+        },
+        {
+            "name": "Node Modules",
+            "description": "Node Modules to install",
+            "env_variable": "NODE_MODULES",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string"
+        },
+        {
+            "name": "Startup Flags",
+            "description": "",
+            "env_variable": "STARTUP_FLAGS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string"
+        }
+    ]
+}

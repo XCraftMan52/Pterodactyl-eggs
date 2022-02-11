@@ -5,7 +5,7 @@
     },
     "exported_at": "2020-10-13T09:41:19-04:00",
     "name": "CoreBot DiscordEgg (NodeJS 12) V1.7",
-    "author": "lloyd@lloyd.best",
+    "author": "lucas@lucaswebber.net",
     "description": "CoreBot Egg,\r\nWhenever you create a server please DO NOT delete node_modules. This will uninstall sodium.\r\nYou will also need (apt-get install autoconf automake g++ libtool build-essential) installed checkout more on https:\/\/docs.corebot.dev\/en\/Setup\/Dependencies",
     "image": "quay.io\/parkervcp\/pterodactyl-images:debian_nodejs-12",
     "startup": "cd \/home\/container && npm install && node {{BOT_JS_FILE}} {{NO_INSTALL}}",
